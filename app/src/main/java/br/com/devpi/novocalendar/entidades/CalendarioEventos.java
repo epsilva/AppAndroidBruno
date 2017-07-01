@@ -1,4 +1,4 @@
-package br.com.devpi.novocalendar.entidade;
+package br.com.devpi.novocalendar.entidades;
 
 /**
  * Created by esdraspinheiro on 29/06/17.

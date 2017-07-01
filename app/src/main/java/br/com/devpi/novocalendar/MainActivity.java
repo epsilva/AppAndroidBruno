@@ -8,7 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.view.MenuItem;
 
-
+import br.com.devpi.novocalendar.fragments.CalendarFragment;
+import br.com.devpi.novocalendar.fragments.HomeFragment;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_logo_tam);
-        getSupportActionBar().setTitle("LATAM");
+        getSupportActionBar().setTitle("LATAM - PDI Vieira");
 
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
