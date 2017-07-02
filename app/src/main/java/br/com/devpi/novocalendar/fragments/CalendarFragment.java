@@ -15,10 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,7 +60,7 @@ public class CalendarFragment extends Fragment {
 
     private SimpleDateFormat formatDia = new SimpleDateFormat("dd");
     private SimpleDateFormat formatMes = new SimpleDateFormat("MMMM - yyyy", Locale.getDefault());
-    private SimpleDateFormat formatoDiaMesAno = new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat formatoDiaMesAno = new SimpleDateFormat("dd/MM/yyyy");
 
     private CompactCalendarView calendarView;
 
@@ -80,46 +83,78 @@ public class CalendarFragment extends Fragment {
 
         HttpCall httpCall = new HttpCall();
         httpCall.setMethodtype(HttpCall.GET);
-        httpCall.setUrl("https://web-service-bruno.herokuapp.com/calendario/eventos/1");
-        HashMap<String,String> params = new HashMap<>();
-        params.put("name","James Bond");
-        httpCall.setParams(params);
+        httpCall.setUrl("https://web-service-bruno.herokuapp.com/calendario/eventos/listaCalendarioEventos");
         new HttpRequest(){
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
                 Gson gson = new Gson();
-                CalendarioEventos calendarioEventos = gson.fromJson(response, CalendarioEventos.class);
-                mTextInfo.setText(calendarioEventos.getDescricaocao());
+                List<CalendarioEventos> listaCalendario = new ArrayList<CalendarioEventos>();
+                Type type = new TypeToken<List<CalendarioEventos>>(){}.getType();
+                listaCalendario = gson.fromJson(response, type);
+                if(!listaCalendario.isEmpty()) {
+                    List<Event> listEvents = new ArrayList<Event>();
+                    for(CalendarioEventos calendarioEventos : listaCalendario){
+                        Event evnt1 = null;
+
+                        try {
+                            evnt1 = new Event(Color.RED, formatoDiaMesAno.parse(calendarioEventos.getDataEvento()).getTime(), calendarioEventos.getNomeEvento());
+                            listEvents.add(evnt1);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    calendarView.addEvents(listEvents);
+                }
             }
         }.execute(httpCall);
+
+//        HttpCall httpCall = new HttpCall();
+//        httpCall.setMethodtype(HttpCall.GET);
+//        httpCall.setUrl("https://web-service-bruno.herokuapp.com/calendario/eventos/1");
+//        HashMap<String,String> params = new HashMap<>();
+//        params.put("name","James Bond");
+//        httpCall.setParams(params);
+//        new HttpRequest(){
+//            @Override
+//            public void onResponse(String response) {
+//                super.onResponse(response);
+//                Gson gson = new Gson();
+//                CalendarioEventos calendarioEventos = gson.fromJson(response, CalendarioEventos.class);
+//                if(calendarioEventos != null) {
+//                    mTextInfo.setText(calendarioEventos.getDescricaocao());
+//                }
+//            }
+//        }.execute(httpCall);
 
         calendarView = (CompactCalendarView) view.findViewById(R.id.compactcalendar_view);
         calendarView.setUseThreeLetterAbbreviation(true);
 
-        for(String data : listaDatasTrabalhadas()){
-            Event evnt1 = null;
-            try {
-                evnt1 = new Event(Color.RED, formatoDiaMesAno.parse(data).getTime(), "Teste de Hoje");
-                calendarView.addEvent(evnt1);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-        }
+//        for(String data : listaDatasTrabalhadas()){
+//            Event evnt1 = null;
+//            try {
+//                evnt1 = new Event(Color.RED, formatoDiaMesAno.parse(data).getTime(), "Teste de Hoje");
+//                calendarView.addEvent(evnt1);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
 
 
         calendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                Context context = getContext();
-
                 mTextDiaMes.setText(formatDia.format(dateClicked));
 
-                if(listaDatasTrabalhadas().contains(formatoDiaMesAno.format(dateClicked))){
-                    mTextInfo.setText("Dia Trabalhado");
-                }else{
-                    mTextInfo.setText("Dia não Trabalhado");
+                List<Event> listaEventos = calendarView.getEvents(dateClicked);
+
+                if(!listaEventos.isEmpty()){
+                    if(listaEventos.size() > 1){
+                        Toast.makeText(getContext(), "Você possui mais de um evento neste dia!", Toast.LENGTH_SHORT).show();
+
+                    }
+                    mTextInfo.setText(listaEventos.get(0).getData().toString());
                 }
 
             }
@@ -137,24 +172,6 @@ public class CalendarFragment extends Fragment {
 
         return view;
     }
-
-//    private List<String> listarEventos(){
-//        HttpCall httpCall = new HttpCall();
-//        httpCall.setMethodtype(HttpCall.GET);
-//        httpCall.setUrl("https://web-service-bruno.herokuapp.com/calendario/eventos/1");
-//        HashMap<String,String> params = new HashMap<>();
-//        params.put("name","James Bond");
-//        httpCall.setParams(params);
-//        new HttpRequest(){
-//            @Override
-//            public void onResponse(String response) {
-//                super.onResponse(response);
-//                Gson gson = new Gson();
-//                CalendarioEventos calendarioEventos = gson.fromJson(response, CalendarioEventos.class);
-//                mTextInfo.setText(calendarioEventos.getDescricaocao());
-//            }
-//        }.execute(httpCall);
-//    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

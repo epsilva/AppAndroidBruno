@@ -30,13 +30,13 @@ public class HttpRequest extends AsyncTask<HttpCall, String, String> {
         HttpCall httpCall = params[0];
         StringBuilder response = new StringBuilder();
         try{
-            String dataParams = getDataString(httpCall.getParams(), httpCall.getMethodtype());
             URL url = new URL(httpCall.getMethodtype() == HttpCall.GET ? httpCall.getUrl() : httpCall.getUrl());
             urlConnection = (HttpURLConnection) url.openConnection();
-            //urlConnection.setRequestMethod(httpCall.getMethodtype() == HttpCall.GET ? "GET":"POST");
-            //urlConnection.setReadTimeout(10000 /* milliseconds */);
-            //  urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setRequestMethod(httpCall.getMethodtype() == HttpCall.GET ? "GET":"POST");
+            urlConnection.setReadTimeout(10000 /* milliseconds */);
+            urlConnection.setConnectTimeout(15000 /* milliseconds */);
             if(httpCall.getParams() != null && httpCall.getMethodtype() == HttpCall.POST){
+                String dataParams = getDataString(httpCall.getParams(), httpCall.getMethodtype());
                 OutputStream os = urlConnection.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, UTF_8));
                 writer.append(dataParams);

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:background="@drawable/background_gradient_init"
+    tools:context="br.com.devpi.novocalendar.LoginActivity"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:text="Tela de Acesso"
+        android:textColor="#faf7f7"
+        android:textSize="17dp"
+        android:textStyle="normal"
+        android:textAlignment="center"
+        />
+
+    <ImageView
+        android:id="@+id/imgLogotam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_logo_tam" />
+
+    <LinearLayout
+            android:id="@+id/email_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="50dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Login"
+                android:textColorHint="#acacac"
+                android:textAlignment="center"
+                android:textStyle="normal"
+                android:id="@+id/login"
+                android:inputType="textAutoComplete"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:textColorHint="#acacac"
+                android:textAlignment="center"
+                android:inputType="textPassword"
+                android:id="@+id/password"
+                />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="50dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/botaoLogin"
+
+                android:layout_width="334dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bordabotao"
+                android:text="Logar"
+                android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:text="Solicitar Acesso"
+                android:textColor="#2e21ba"
+                android:textSize="17dp"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_horizontal"
+        android:text="www.devpi.com.br"
+        android:textColor="#454545"
+        android:textSize="12dp" />
+
+
+</LinearLayout>
+
+
