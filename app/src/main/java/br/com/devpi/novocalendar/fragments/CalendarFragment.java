@@ -155,6 +155,8 @@ public class CalendarFragment extends Fragment {
 
                     }
                     mTextInfo.setText(listaEventos.get(0).getData().toString());
+                }else{
+                    mTextInfo.setText("Você não possui evento neste dia!");
                 }
 
             }

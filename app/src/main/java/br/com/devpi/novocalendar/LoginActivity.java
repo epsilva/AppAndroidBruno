@@ -43,7 +43,7 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
                 HttpCall httpCall = new HttpCall();
                 httpCall.setMethodtype(HttpCall.GET);
-                httpCall.setUrl(EnumConexoes.GET_USUARIO_BY_LOGIN.getConexao()+login.getText().toString());
+                httpCall.setUrl(EnumConexoes.GET_USUARIO_BY_LOGIN.getConexao()+login.getText().toString().replace('.', '+'));
                 new HttpRequest(){
                     @Override
                     public void onResponse(String response) {
