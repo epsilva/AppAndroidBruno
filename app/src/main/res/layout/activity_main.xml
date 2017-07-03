@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_weight="1" >  //Peso total do Layout
+    android:layout_weight="1" >//Peso total do Layout
 
 
     <LinearLayout
@@ -12,14 +12,15 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0"> //Esse Layout pesa 50% do Layout total
+        android:layout_weight="1.0">//Esse Layout pesa 50% do Layout total
+
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.0"> //Esse Layout pesa 50% do Layout total
+        android:layout_weight="0.0">//Esse Layout pesa 50% do Layout total
 
         <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
