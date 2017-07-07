@@ -24,6 +24,7 @@
             android:maxLength="20"
             android:inputType="textPersonName"
             android:hint="Nome do Evento"
+            android:background="#ffffff"
             />
 
         <EditText
@@ -34,6 +35,8 @@
             android:ems="10"
             android:maxLength="30"
             android:inputType="textPersonName"
+            android:background="#ffffff"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:hint="Descrição" />
 
         <LinearLayout
@@ -49,6 +52,8 @@
                 android:ems="10"
                 android:enabled="false"
                 android:hint="Data"
+                android:background="#ffffff"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:maxLength="10"
                 android:inputType="date" />
 
@@ -57,6 +62,7 @@
                 android:layout_width="104dp"
                 android:onClick="showDatePickerDialog"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 app:srcCompat="@mipmap/ic_date_" />
         </LinearLayout>
 
@@ -75,6 +81,8 @@
                 android:textAlignment="center"
                 android:hint="Hora"
                 android:enabled="false"
+                android:background="#ffffff"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:maxLength="5"
                 android:inputType="time" />
 
@@ -83,7 +91,7 @@
                 android:layout_width="104dp"
                 android:onClick="showTimePickerDialog"
                 android:layout_height="wrap_content"
-
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 app:srcCompat="@mipmap/ic_hora_" />
 
 

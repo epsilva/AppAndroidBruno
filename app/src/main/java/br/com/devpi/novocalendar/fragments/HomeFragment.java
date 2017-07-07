@@ -1,6 +1,9 @@
 package br.com.devpi.novocalendar.fragments;
 
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,12 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import br.com.devpi.novocalendar.FormCalendarActivity;
+import br.com.devpi.novocalendar.FormDocumentoActivity;
 import br.com.devpi.novocalendar.R;
 import br.com.devpi.novocalendar.adpter.AdpterArrayDocumento;
 import br.com.devpi.novocalendar.entidades.Documentos;
@@ -24,7 +35,9 @@ import br.com.devpi.novocalendar.entidades.Documentos;
  */
 public class HomeFragment extends Fragment {
 
-    List<Documentos> listaDocumentos;
+    private ArrayList<Documentos> listaDocumentos;
+    private ListView listView;
+    ImageButton imageButton;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -35,37 +48,31 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lista_documento, container, false);
-
-        List<String> lista = new ArrayList<String>();
-        lista.add("Teste 0");
-        lista.add("Teste 1");
-        lista.add("Teste 2");
-        lista.add("Teste 3");
-        lista.add("Teste 4");
-        lista.add("Teste 5");
-        lista.add("Teste 6");
-        lista.add("Teste 7");
-        lista.add("Teste 8");
-        lista.add("Teste 9");
-        lista.add("Teste 10");
+        listView = (ListView) view.findViewById(R.id.listView);
+        imageButton = (ImageButton) view.findViewById(R.id.form_button_doc);
 
         listaDocumentos();
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, lista);
+        new ReadJSON().execute();
 
-        final ListView listView = (ListView) view.findViewById(R.id.lista);
-//        listView.setAdapter(arrayAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Documentos doc = (Documentos) listView.getItemAtPosition(position);
+                Uri uri = Uri.parse(doc.getLinkDoc());
+                startActivity( new Intent( Intent.ACTION_VIEW, uri ) );
+            }
+        });
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                Toast.makeText(getContext(), listView.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFormDoc();
+            }
+        });
 
-        AdpterArrayDocumento adapter =
-                new AdpterArrayDocumento(listaDocumentos, inflater);
-        listView.setAdapter(adapter);
+
+
 
         return view;
     }
@@ -74,11 +81,36 @@ public class HomeFragment extends Fragment {
 
         listaDocumentos = new ArrayList<Documentos>();
 
-        for(int i = 0; i <= 10; i++){
+        for(int i = 0; i <= 0; i++){
             Documentos documento = new Documentos();
-            documento.setNomeDocumento("Teste "+i);
-            documento.setLinkDoc("Link "+i);
+            documento.setNomeDocumento("Documento LATAM "+i);
+            documento.setUsuario("Bruno Vieira");
+            documento.setLinkDoc("https://docs.google.com/a/latam.com/forms/d/e/1FAIpQLScxP3h0hfYIlqxap7yMzofk8mteCsIj3uCYaRJO1pZHmb--IQ/viewform?usp=sf_link"+i);
+            documento.setData(new Date());
             listaDocumentos.add(documento);
+        }
+    }
+
+    public void openFormDoc(){
+        Intent intent = new Intent(getActivity(), FormDocumentoActivity.class);
+        startActivity(intent);
+    }
+
+    class ReadJSON extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String content) {
+
+            AdpterArrayDocumento adapter = new AdpterArrayDocumento(
+                    getContext(), R.layout.fragment_home, listaDocumentos
+            );
+
+            listView.setAdapter(adapter);
         }
     }
 

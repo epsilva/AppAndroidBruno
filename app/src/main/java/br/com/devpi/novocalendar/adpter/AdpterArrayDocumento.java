@@ -1,13 +1,18 @@
 package br.com.devpi.novocalendar.adpter;
 
-import android.app.Fragment;
+import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.devpi.novocalendar.R;
@@ -17,43 +22,42 @@ import br.com.devpi.novocalendar.entidades.Documentos;
  * Created by esdraspinheiro on 02/07/17.
  */
 
-public class AdpterArrayDocumento extends BaseAdapter {
+public class AdpterArrayDocumento extends ArrayAdapter<Documentos> {
 
-    private final List<Documentos> listaDocumentos;
-    private final LayoutInflater inflater;
+    private Context context;
+    private int resource;
+    private ArrayList<Documentos> listaDocumentos;
 
-    public AdpterArrayDocumento(List<Documentos> listaDocumentos, LayoutInflater inflater) {
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
+    public AdpterArrayDocumento(Context context, int resource, ArrayList<Documentos> listaDocumentos) {
+        super(context, resource, listaDocumentos);
+        this.context = context;
+        this.resource = resource;
         this.listaDocumentos = listaDocumentos;
-        this.inflater = inflater;
-    }
-
-
-    @Override
-    public int getCount() {
-        return listaDocumentos.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return listaDocumentos.get(position);
-    }
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
+        if (convertView == null){
+            LayoutInflater layoutInflater = (LayoutInflater) getContext()
+                    .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            convertView = layoutInflater.inflate(R.layout.fragment_home, null, true);
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
-        View view = inflater.inflate(R.layout.fragment_home, viewGroup, false);
-        Documentos documentos = (Documentos) listaDocumentos.get(position);
-        TextView nome = (TextView) view.findViewById(R.id.lista_curso_personalizada_nome);
-        TextView descricao = (TextView) view.findViewById(R.id.lista_curso_personalizada_descricao);
+        }
+        Documentos documentos = getItem(position);
 
-        nome.setText(documentos.getNomeDocumento());
-        descricao.setText(documentos.getLinkDoc());
+        TextView txtTitulo = (TextView) convertView.findViewById(R.id.titulo_doc);
+        txtTitulo.setText(documentos.getNomeDocumento());
+
+        TextView txtUsuario = (TextView) convertView.findViewById(R.id.usuario_doc);
+        txtUsuario.setText(documentos.getUsuario());
+
+        TextView txtDataDoc = (TextView) convertView.findViewById(R.id.datas_doc_doc);
+        txtDataDoc.setText(simpleDateFormat.format(documentos.getData()));
 
 
-        return view;
+        return convertView;
     }
 }
